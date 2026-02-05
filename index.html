@@ -57,21 +57,53 @@
             display: none;
             white-space: pre-wrap;
         }
-        .container { position: relative; z-index: 2; text-align: center; }
+        
+        .container { 
+            position: relative; 
+            z-index: 2; 
+            text-align: center; 
+            width: 100%;
+        }
+        
+        #errorCode {
+            height: 12vw; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
         .glitch { font-size: 10vw; position: relative; color: #fff; text-transform: uppercase; }
         .corrupted { color: #ff0000 !important; text-shadow: 0 0 10px #ff0000; }
-        .line:not(:first-child) { position: absolute; top: 0; left: 0; }
+        
+        /* Ensure glitch lines stay centered during the jitter */
+        .line { width: 100%; left: 0; right: 0; }
+        .line:not(:first-child) { position: absolute; top: 0; }
+        
         .line:nth-child(1) { animation: glitch1 500ms -184ms linear infinite; }
         .line:nth-child(2) { animation: glitch2 500ms -740ms linear infinite; }
         .line:nth-child(3) { animation: glitch3 500ms -333ms linear infinite; }
         .line:nth-child(4) { animation: glitch4 500ms -733ms linear infinite; }
         .line:nth-child(5) { animation: glitch5 500ms -896ms linear infinite; }
+        
         @keyframes glitch1 { 0%, 80%, 100% { transform: translateX(0); } 85% { transform: translateX(2px); color: #4e9a26; } 90% { transform: translateX(5px); color: #ac1212; } }
         @keyframes glitch2 { 0%, 80%, 100% { transform: translateX(0); } 85% { transform: translateX(5px); color: #4e9a26; } 90% { transform: translateX(-1px); color: #ac1212; } }
         @keyframes glitch3 { 0%, 80%, 100% { transform: translateX(0); } 85% { transform: translateX(-2px); color: #4e9a26; } 90% { transform: translateX(3px); color: #ac1212; } }
         @keyframes glitch4 { 0%, 80%, 100% { transform: translateX(0); } 85% { transform: translateX(-4px); color: #4e9a26; } 90% { transform: translateX(5px); color: #ac1212; } }
         @keyframes glitch5 { 0%, 80%, 100% { transform: translateX(0); } 85% { transform: translateX(-3px); color: #4e9a26; } 90% { transform: translateX(5px); color: #ac1212; } }
-        .wisedom { color: #009400; font-size: 32px; min-height: 60px; border-right: 3px solid #009400; display: inline-block; margin-top: 20px; max-width: 80vw;}
+        
+        .wisedom { 
+            color: #009400; 
+            font-size: 32px; 
+            min-height: 80px; 
+            border-right: 3px solid #009400; 
+            display: inline-block; 
+            margin-top: 20px; 
+            max-width: 80vw;
+            word-wrap: break-word; 
+            line-height: 1.2;
+        }
+        
         .wisedom.red-text { color: #ff0000; border-color: #ff0000; text-shadow: 0 0 5px #ff0000; }
         a { display: inline-block; margin-top: 30px; padding: 12px 24px; background-color: #ff0000; color: #000; border-radius: 4px; text-decoration: none; font-weight: bold; opacity: 0; transition: opacity 1s; }
         .show-btn { opacity: 1; }
@@ -99,6 +131,7 @@
         const backBtn = document.getElementById('backBtn');
         const staticCanvas = document.getElementById('static');
         const rainCanvas = document.getElementById('rainCanvas');
+        
         const hackCommands = [
             "Initializing deep-system breach...",
             "> Scanning network topology...",
@@ -136,6 +169,7 @@
             "Initiating final hardware disconnect...",
             "Goodbye, world."
         ];
+        
         const wiseness = [
             'I am with you now',
             'All your crying will not get rid of me',
@@ -145,8 +179,18 @@
             'Even though you closed the camera I still see you',
             'Your girlfriend is texting you',
             'Say goodbye to privacy',
+            'You dont like when text appears slowly',
+            'Your mom doesnt like when you stay up this late',
+            'You leave your phone face down around your girlfriend',
+            'You don’t like when she says ‘are you okay?’',
+            'You’ve typed her name more than anything else.',
+            'You open her profile more than her messages',
+            'Her contact data was updated recently',
+            'How do you feel now?',
+            'This is what happens when you go onto websites you shouldn’t',
+            'Everything you know and love is mine now, thanks for everything.'
         ];
-        // --- VISUALS ---
+
         const sCtx = staticCanvas.getContext('2d');
         function drawStatic() {
             staticCanvas.width = window.innerWidth; staticCanvas.height = window.innerHeight;
@@ -158,6 +202,7 @@
             }
             sCtx.putImageData(imageData, 0, 0);
         }
+
         const rCtx = rainCanvas.getContext('2d');
         let drops = [];
         function initRain() {
@@ -173,67 +218,56 @@
                 drops[i]++;
             });
         }
-        // Even faster typing — urgent hacker vibe, still readable
+
         async function typeLine(lineElement, text) {
             for (let i = 0; i < text.length; i++) {
                 const char = text[i];
                 lineElement.innerHTML += char;
-                // Faster delays
-                let delay;
-                if (char === ' ' || char === '\n') {
-                    delay = 50 + Math.random() * 90;       // quicker spacing
-                } else if (Math.random() < 0.06) {         // rarer long pauses
-                    delay = 140 + Math.random() * 160;
-                } else if (Math.random() < 0.18) {         // more frequent bursts
-                    delay = 18 + Math.random() * 25;
-                } else {
-                    delay = 30 + Math.random() * 35;       // main range now 30–65 ms
-                }
+                let delay = (char === ' ' || char === '\n') ? (50 + Math.random() * 90) : (30 + Math.random() * 35);
                 await new Promise(r => setTimeout(r, delay));
-                // Typo correction — faster animation
-                if (Math.random() < 0.04 && i > 3 && i < text.length - 3) {
-                    const mistake = ['x','z','1','!','@'][Math.floor(Math.random()*5)];
-                    lineElement.innerHTML += mistake;
-                    await new Promise(r => setTimeout(r, 100));
-                    lineElement.innerHTML = lineElement.innerHTML.slice(0, -1);
-                    await new Promise(r => setTimeout(r, 70));
-                }
             }
         }
+
         async function startSequence() {
-            // 1. Error 404 starts (3s wait)
-            await new Promise(r => setTimeout(r, 3000));
-            // 2. Terminal Sequence
+            await new Promise(r => setTimeout(r, 2000));
             terminal.style.display = 'block';
             for (let cmd of hackCommands) {
                 let div = document.createElement('div');
                 terminal.appendChild(div);
                 await typeLine(div, cmd);
-                // Shorter pauses after lines
-                await new Promise(r => setTimeout(r, cmd.startsWith('>') ? 450 : 150));
+                await new Promise(r => setTimeout(r, 100));
                 terminal.scrollTop = terminal.scrollHeight;
             }
-            await new Promise(r => setTimeout(r, 700));
-            // 3. BLACKOUT PHASE
+            await new Promise(r => setTimeout(r, 500));
             terminal.style.display = 'none';
-            await new Promise(r => setTimeout(r, 1000));
-            // 4. Chaos – 4s rain
+            
+            // Phase: Static & Matrix Rain (6 Seconds)
             staticCanvas.style.display = 'block';
             rainCanvas.style.display = 'block';
             initRain();
             const sInt = setInterval(drawStatic, 50);
             const rInt = setInterval(drawRain, 50);
-            await new Promise(r => setTimeout(r, 4000));
-            // 5. Resolve
+            await new Promise(r => setTimeout(r, 6000)); 
+            
             clearInterval(sInt); clearInterval(rInt);
             staticCanvas.style.display = 'none';
             rainCanvas.style.display = 'none';
+            
+            // Apply Red Corrupted Glitch to 403
             errorCode.classList.add('corrupted');
-            errorCode.innerHTML = `<div class="line">Error 403</div><div class="line">Error 403</div><div class="line">Error 403</div><div class="line">Error 403</div><div class="line">Error 403</div>`;
+            errorCode.innerHTML = `
+                <div class="line">Error 403</div>
+                <div class="line">Error 403</div>
+                <div class="line">Error 403</div>
+                <div class="line">Error 403</div>
+                <div class="line">Error 403</div>
+            `;
+            
             element.classList.add('red-text');
             backBtn.classList.add('show-btn');
             startWiseness();
         }
+
         let currentIdx = 0, charIdx = 0;
         function startWiseness() {
             const text = wiseness[currentIdx];
