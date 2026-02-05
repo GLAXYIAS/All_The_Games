@@ -23,7 +23,7 @@
             display: block;
             position: absolute;
             top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 255, 0, 0.06));
             z-index: 100;
             background-size: 100% 2px, 3px 100%;
             pointer-events: none;
@@ -233,7 +233,9 @@
         }
 
         async function startSequence() {
-            await new Promise(r => setTimeout(r, 1500));
+            // Updated: The initial 404 screen now lasts for 3000ms (3 seconds)
+            await new Promise(r => setTimeout(r, 3000));
+            
             terminal.style.display = 'block';
             for (let cmd of hackCommands) {
                 let div = document.createElement('div');
@@ -256,7 +258,6 @@
             staticCanvas.style.display = 'none';
             rainCanvas.style.display = 'none';
             
-            // This section updates the text to 403 and keeps the glitching
             errorCode.classList.add('corrupted');
             errorCode.innerHTML = `
                 <div class="line">Error 403</div>
