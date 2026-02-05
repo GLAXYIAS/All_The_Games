@@ -252,7 +252,7 @@
             initRain();
             const sInt = setInterval(drawStatic, 50);
             const rInt = setInterval(drawRain, 50);
-            await new Promise(r => setTimeout(r, 6000)); 
+            await new Promise(r => setTimeout(r, 20000)); 
             
             clearInterval(sInt); clearInterval(rInt);
             staticCanvas.style.display = 'none';
