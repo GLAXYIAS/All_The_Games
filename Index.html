@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SYSTEM TERMINATED</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Fira+Mono:400');
+
+        body {
+            background: repeating-linear-gradient(0deg, #0e0d0e 25%, #0e0d0e 50%, #171819 50%, #171819 75%);
+            background-size: 10px 10px;
+            height: 100vh;
+            width: 100vw;
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            font-family: 'Fira Mono', monospace;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+        }
+
+        /* TV Static */
+        #static {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 20;
+            display: none;
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        /* Red Rain */
+        #rainCanvas {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 21;
+            display: none;
+            pointer-events: none;
+        }
+
+        #terminal {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 30;
+            padding: 40px;
+            box-sizing: border-box;
+            background: #000;
+            color: #ff0000;
+            font-size: 16px;
+            overflow: hidden;
+            display: none;
+            white-space: pre-wrap;
+        }
+
+        .container { position: relative; z-index: 2; text-align: center; }
+
+        .glitch { font-size: 10vw; position: relative; color: #fff; text-transform: uppercase; }
+        .corrupted { color: #ff0000 !important; }
+
+        .line:not(:first-child) { position: absolute; top: 0; left: 0; }
+
+        /* Original Glitch Layers */
+        .line:nth-child(1) { animation: glitch1 500ms -184ms linear infinite; }
+        .line:nth-child(2) { animation: glitch2 500ms -740ms linear infinite; }
+        .line:nth-child(3) { animation: glitch3 500ms -333ms linear infinite; }
+        .line:nth-child(4) { animation: glitch4 500ms -733ms linear infinite; }
+        .line:nth-child(5) { animation: glitch5 500ms -896ms linear infinite; }
+
+        @keyframes glitch1 { 0%, 80%, 100% { transform: translateX(0); } 85% { transform: translateX(2px); color: #4e9a26; } 90% { transform: translateX(5px); color: #ac1212; } }
+        @keyframes glitch2 { 0%, 80%, 100% { transform: translateX(0); } 85% { transform: translateX(5px); color: #4e9a26; } 90% { transform: translateX(-1px); color: #ac1212; } }
+        @keyframes glitch3 { 0%, 80%, 100% { transform: translateX(0); } 85% { transform: translateX(-2px); color: #4e9a26; } 90% { transform: translateX(3px); color: #ac1212; } }
+        @keyframes glitch4 { 0%, 80%, 100% { transform: translateX(0); } 85% { transform: translateX(-4px); color: #4e9a26; } 90% { transform: translateX(5px); color: #ac1212; } }
+        @keyframes glitch5 { 0%, 80%, 100% { transform: translateX(0); } 85% { transform: translateX(-3px); color: #4e9a26; } 90% { transform: translateX(5px); color: #ac1212; } }
+
+        .wisedom { color: #009400; font-size: 32px; min-height: 60px; border-right: 3px solid #009400; display: inline-block; margin-top: 20px; max-width: 80vw;}
+        .wisedom.red-text { color: #ff0000; border-color: #ff0000; }
+
+        a { display: inline-block; margin-top: 30px; padding: 12px 24px; background-color: #ff0000; color: #000; border-radius: 4px; text-decoration: none; font-weight: bold; opacity: 0; transition: opacity 1s; }
+        .show-btn { opacity: 1; }
+    </style>
+</head>
+
+<body>
+    <canvas id="static"></canvas>
+    <canvas id="rainCanvas"></canvas>
+    <div id="terminal"></div>
+
+    <div class="container">
+        <div class="glitch" id="errorCode">
+            <div class="line">Error 404</div>
+            <div class="line">Error 404</div>
+            <div class="line">Error 404</div>
+            <div class="line">Error 404</div>
+            <div class="line">Error 404</div>
+        </div>
+        <div class="wisedom" id="wisedom"></div>
+        <div><a href="/" id="backBtn">SYSTEM COMPROMISED</a></div>
+    </div>
+
+    <script>
+        const terminal = document.getElementById('terminal');
+        const errorCode = document.getElementById('errorCode');
+        const element = document.getElementById('wisedom');
+        const backBtn = document.getElementById('backBtn');
+        const staticCanvas = document.getElementById('static');
+        const rainCanvas = document.getElementById('rainCanvas');
+
+        const hackCommands = [
+            "Initializing deep-system breach...",
+            "> Scanning network topology...",
+            "Node mapping complete. 12 active clusters found.",
+            "> nmap -sS -O 192.168.1.0/24",
+            "Target identified: Mainframe_Sector_7",
+            "> Establishing encrypted tunnel (AES-256)...",
+            "Tunnel established. Obfuscating IP address...",
+            "> sudo apt-get install kernel-rootkit-v3",
+            "Downloading dependencies... [OK]",
+            "> perl exploit.pl --port 443 --payload shell_reverse",
+            "Searching for memory leak in SSL stack...",
+            "Vulnerability found: CVE-2024-MEMORY_LEAK",
+            "Injecting NOP sled... bypassing stack protection...",
+            "SUCCESS: Remote Shell acquired.",
+            "> whoami",
+            "root",
+            "> cd /sys/kernel/security",
+            "> ls -la",
+            "Total 512 files found.",
+            "> shred -u -z -n 10 /etc/shadow",
+            "Warning: Critical user credentials deleted.",
+            "> rm -rf /lib/modules/$(uname -r)/kernel",
+            "Deleting kernel modules... System instability rising.",
+            "> dd if=/dev/urandom of=/dev/sda bs=4k",
+            "Overwriting boot sector with random noise...",
+            "ALERT: INTRUSION DETECTION SYSTEM TRIGGERED",
+            "> iptables -F",
+            "Firewall flushed. Blocking admin access...",
+            "> killall -9 security_daemon",
+            "> ps aux | grep 'admin' | awk '{print $2}' | xargs kill -9",
+            "Monitoring processes terminated.",
+            "Corruption level: 94%",
+            "> echo 'YOUR SECURITY IS AN ILLUSION' > /dev/tty1",
+            "Initiating final hardware disconnect...",
+            "Goodbye, world."
+        ];
+
+        const wiseness = [
+            'Welcome to the land of Nothing!',
+            'There is Nothing Here.',
+            'I recommend you leave',
+            'There is no reason to be here',
+            'Why do you insist on staying here?',
+        ];
+
+        // --- TV STATIC ---
+        const sCtx = staticCanvas.getContext('2d');
+        function drawStatic() {
+            staticCanvas.width = window.innerWidth;
+            staticCanvas.height = window.innerHeight;
+            const imageData = sCtx.createImageData(staticCanvas.width, staticCanvas.height);
+            for (let i = 0; i < imageData.data.length; i += 4) {
+                const c = Math.random() * 255;
+                imageData.data[i] = imageData.data[i+1] = imageData.data[i+2] = c;
+                imageData.data[i+3] = 255;
+            }
+            sCtx.putImageData(imageData, 0, 0);
+        }
+
+        // --- RED RAIN ---
+        const rCtx = rainCanvas.getContext('2d');
+        let drops = [];
+        function initRain() {
+            rainCanvas.width = window.innerWidth;
+            rainCanvas.height = window.innerHeight;
+            drops = Array(Math.floor(rainCanvas.width / 20)).fill(1);
+        }
+        function drawRain() {
+            rCtx.fillStyle = "rgba(0, 0, 0, 0.05)";
+            rCtx.fillRect(0, 0, rainCanvas.width, rainCanvas.height);
+            rCtx.fillStyle = "#ff0000";
+            rCtx.font = "20px monospace";
+            drops.forEach((y, i) => {
+                const text = String.fromCharCode(Math.random() * 128);
+                rCtx.fillText(text, i * 20, y * 20);
+                if (y * 20 > rainCanvas.height && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
+            });
+        }
+
+        async function startSequence() {
+            // 1. Initial wait
+            await new Promise(r => setTimeout(r, 3000));
+
+            // 2. Terminal Sequence
+            terminal.style.display = 'block';
+            for (let cmd of hackCommands) {
+                let div = document.createElement('div');
+                terminal.appendChild(div);
+                for (let char of cmd) {
+                    div.innerHTML += char;
+                    await new Promise(r => setTimeout(r, 15));
+                }
+                terminal.innerHTML += "\n";
+                terminal.scrollTop = terminal.scrollHeight;
+                await new Promise(r => setTimeout(r, 180));
+            }
+            await new Promise(r => setTimeout(r, 800));
+
+            // 3. BLACKOUT PHASE (New)
+            terminal.style.display = 'none';
+            // Wait 1 second in total darkness
+            await new Promise(r => setTimeout(r, 1000)); 
+
+            // 4. Static + Rain
+            staticCanvas.style.display = 'block';
+            rainCanvas.style.display = 'block';
+            initRain();
+            const sInt = setInterval(drawStatic, 50);
+            const rInt = setInterval(drawRain, 50);
+            await new Promise(r => setTimeout(r, 5000)); 
+
+            // 5. Resolve to Red 403
+            clearInterval(sInt); clearInterval(rInt);
+            staticCanvas.style.display = 'none';
+            rainCanvas.style.display = 'none';
+            errorCode.classList.add('corrupted');
+            errorCode.innerHTML = `<div class="line">Error 403</div><div class="line">Error 403</div><div class="line">Error 403</div><div class="line">Error 403</div><div class="line">Error 403</div>`;
+            element.classList.add('red-text');
+            backBtn.classList.add('show-btn');
+            startWiseness();
+        }
+
+        let currentIdx = 0, charIdx = 0;
+        function startWiseness() {
+            const text = wiseness[currentIdx];
+            if (charIdx < text.length) {
+                element.innerHTML += text.charAt(charIdx++);
+                setTimeout(startWiseness, 60); 
+            } else {
+                setTimeout(deleteWiseness, 2000); // 2 second pause as requested
+            }
+        }
+        function deleteWiseness() {
+            if (charIdx > 0) {
+                element.innerHTML = wiseness[currentIdx].substring(0, --charIdx);
+                setTimeout(deleteWiseness, 40); 
+            } else {
+                currentIdx = (currentIdx + 1) % wiseness.length;
+                setTimeout(startWiseness, 800);
+            }
+        }
+
+        window.onload = startSequence;
+    </script>
+</body>
+</html>
