@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>SYSTEM TERMINATED</title>
+    <title>ERROR</title>
     <style>
         @import url('https://fonts.googleapis.com/css?family=Fira+Mono:400');
         body {
@@ -74,9 +74,11 @@
         }
 
         .glitch { font-size: 10vw; position: relative; color: #fff; text-transform: uppercase; }
-        .corrupted { color: #ff0000 !important; text-shadow: 0 0 10px #ff0000; }
         
-        /* Ensure glitch lines stay centered during the jitter */
+        /* Forces the Error 403 to stay Red and keep the glitching animation */
+        .corrupted { color: #ff0000 !important; text-shadow: 0 0 15px #ff0000; }
+        .corrupted .line { color: #ff0000 !important; }
+
         .line { width: 100%; left: 0; right: 0; }
         .line:not(:first-child) { position: absolute; top: 0; }
         
@@ -86,11 +88,12 @@
         .line:nth-child(4) { animation: glitch4 500ms -733ms linear infinite; }
         .line:nth-child(5) { animation: glitch5 500ms -896ms linear infinite; }
         
-        @keyframes glitch1 { 0%, 80%, 100% { transform: translateX(0); } 85% { transform: translateX(2px); color: #4e9a26; } 90% { transform: translateX(5px); color: #ac1212; } }
-        @keyframes glitch2 { 0%, 80%, 100% { transform: translateX(0); } 85% { transform: translateX(5px); color: #4e9a26; } 90% { transform: translateX(-1px); color: #ac1212; } }
-        @keyframes glitch3 { 0%, 80%, 100% { transform: translateX(0); } 85% { transform: translateX(-2px); color: #4e9a26; } 90% { transform: translateX(3px); color: #ac1212; } }
-        @keyframes glitch4 { 0%, 80%, 100% { transform: translateX(0); } 85% { transform: translateX(-4px); color: #4e9a26; } 90% { transform: translateX(5px); color: #ac1212; } }
-        @keyframes glitch5 { 0%, 80%, 100% { transform: translateX(0); } 85% { transform: translateX(-3px); color: #4e9a26; } 90% { transform: translateX(5px); color: #ac1212; } }
+        /* Cleaned up animations to prevent green flashes */
+        @keyframes glitch1 { 0%, 80%, 100% { transform: translateX(0); } 85% { transform: translateX(2px); } 90% { transform: translateX(5px); } }
+        @keyframes glitch2 { 0%, 80%, 100% { transform: translateX(0); } 85% { transform: translateX(5px); } 90% { transform: translateX(-1px); } }
+        @keyframes glitch3 { 0%, 80%, 100% { transform: translateX(0); } 85% { transform: translateX(-2px); } 90% { transform: translateX(3px); } }
+        @keyframes glitch4 { 0%, 80%, 100% { transform: translateX(0); } 85% { transform: translateX(-4px); } 90% { transform: translateX(5px); } }
+        @keyframes glitch5 { 0%, 80%, 100% { transform: translateX(0); } 85% { transform: translateX(-3px); } 90% { transform: translateX(5px); } }
         
         .wisedom { 
             color: #009400; 
@@ -221,27 +224,25 @@
 
         async function typeLine(lineElement, text) {
             for (let i = 0; i < text.length; i++) {
-                const char = text[i];
-                lineElement.innerHTML += char;
-                let delay = (char === ' ' || char === '\n') ? (50 + Math.random() * 90) : (30 + Math.random() * 35);
+                lineElement.innerHTML += text[i];
+                let delay = (text[i] === ' ') ? 40 : (20 + Math.random() * 25);
                 await new Promise(r => setTimeout(r, delay));
             }
         }
 
         async function startSequence() {
-            await new Promise(r => setTimeout(r, 2000));
+            await new Promise(r => setTimeout(r, 1500));
             terminal.style.display = 'block';
             for (let cmd of hackCommands) {
                 let div = document.createElement('div');
                 terminal.appendChild(div);
                 await typeLine(div, cmd);
-                await new Promise(r => setTimeout(r, 100));
+                await new Promise(r => setTimeout(r, 150)); 
                 terminal.scrollTop = terminal.scrollHeight;
             }
             await new Promise(r => setTimeout(r, 500));
             terminal.style.display = 'none';
             
-            // Phase: Static & Matrix Rain (6 Seconds)
             staticCanvas.style.display = 'block';
             rainCanvas.style.display = 'block';
             initRain();
@@ -253,7 +254,7 @@
             staticCanvas.style.display = 'none';
             rainCanvas.style.display = 'none';
             
-            // Apply Red Corrupted Glitch to 403
+            // This section updates the text to 403 and keeps the glitching
             errorCode.classList.add('corrupted');
             errorCode.innerHTML = `
                 <div class="line">Error 403</div>
@@ -273,18 +274,18 @@
             const text = wiseness[currentIdx];
             if (charIdx < text.length) {
                 element.innerHTML += text.charAt(charIdx++);
-                setTimeout(startWiseness, 60);
+                setTimeout(startWiseness, 50);
             } else {
-                setTimeout(deleteWiseness, 2000);
+                setTimeout(deleteWiseness, 2200);
             }
         }
         function deleteWiseness() {
             if (charIdx > 0) {
                 element.innerHTML = wiseness[currentIdx].substring(0, --charIdx);
-                setTimeout(deleteWiseness, 40);
+                setTimeout(deleteWiseness, 25);
             } else {
                 currentIdx = (currentIdx + 1) % wiseness.length;
-                setTimeout(startWiseness, 800);
+                setTimeout(startWiseness, 600);
             }
         }
         window.onload = startSequence;
