@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>ERROR 403</title>
+    <title>NULL_X</title>
     <style>
         @import url('https://fonts.googleapis.com/css?family=Fira+Mono:400');
         body {
@@ -118,11 +118,11 @@
     <div id="terminal"></div>
     <div class="container">
         <div class="glitch" id="errorCode">
-            <div class="line">Error 404</div>
-            <div class="line">Error 404</div>
-            <div class="line">Error 404</div>
-            <div class="line">Error 404</div>
-            <div class="line">Error 404</div>
+            <div class="line">I SEE YOU</div>
+            <div class="line">I SEE YOU</div>
+            <div class="line">I SEE YOU</div>
+            <div class="line">I SEE YOU</div>
+            <div class="line">I SEE YOU</div>
         </div>
         <div class="wisedom" id="wisedom"></div>
         <div><a href="/" id="backBtn">SYSTEM COMPROMISED</a></div>
@@ -233,7 +233,7 @@
         }
 
         async function startSequence() {
-            // Updated: The initial 404 screen now lasts for 3000ms (3 seconds)
+            // Initial 'I SEE YOU' screen lasts for 3000ms (3 seconds)
             await new Promise(r => setTimeout(r, 3000));
             
             terminal.style.display = 'block';
@@ -258,6 +258,7 @@
             staticCanvas.style.display = 'none';
             rainCanvas.style.display = 'none';
             
+            // Final glitch to Error 403
             errorCode.classList.add('corrupted');
             errorCode.innerHTML = `
                 <div class="line">Error 403</div>
